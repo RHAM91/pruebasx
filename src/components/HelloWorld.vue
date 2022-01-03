@@ -28,15 +28,48 @@
       <li><a href="https://vue-loader.vuejs.org" target="_blank" rel="noopener">vue-loader</a></li>
       <li><a href="https://github.com/vuejs/awesome-vue" target="_blank" rel="noopener">awesome-vue</a></li>
     </ul>
+    <h1>
+      {{version}}
+    </h1>
+    <button type="button" v-if="update" @click="pushversion">Actualizar</button>
+
   </div>
 </template>
 
 <script>
+
+import { ipcRenderer } from 'electron'
+window.ipcRenderer = ipcRenderer
+
 export default {
   name: 'HelloWorld',
-  props: {
-    msg: String
-  }
+  data() {
+    return {
+      version: '',
+      show: false,
+      update: false
+    }
+  },
+  methods: {
+    getVersion(){
+      ipcRenderer.send('app_version')
+
+      ipcRenderer.on('app_version', (event, args)=>{
+        ipcRenderer.removeAllListeners('app_version')
+        this.version = ars.version
+      })
+
+      ipcRenderer.on('actualizacion', (event, message)=>{
+        this.update = message
+      })
+    },
+    pushversion(){
+      ipcRenderer.send('ok_update')
+    }
+  },
+  mounted() {
+    this.getVersion()
+  },
 }
 </script>
 
