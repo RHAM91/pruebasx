@@ -8,6 +8,7 @@ import fs from 'fs'
 import axios from 'axios'
 import os from 'os'
 import macaddress from 'macaddress'
+//import { execFile }  from 'child_process'
 
 const isDevelopment = process.env.NODE_ENV !== 'production'
 
@@ -120,6 +121,27 @@ ipcMain.on('app_version', (event)=>{
 
 ipcMain.on('ok_update', (event) =>{ 
   autoUpdater.quitAndInstall()
+})
+
+
+// --> EJECUTA COMPANDOS EN LOCAL
+
+
+ipcMain.on('ejecutarComando', (event)=>{
+
+  
+  const child = require('child_process').execFile
+
+  let path = 'calc.exe'
+  console.log('intentando....')
+  child(path, function(err, data){
+    if(err){
+      console.error(err)
+      return
+    }
+    console.log(data.toString())
+  })
+
 })
 
 
