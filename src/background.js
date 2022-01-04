@@ -132,8 +132,8 @@ ipcMain.on('ejecutarComando', (event)=>{
   
   const child = require('child_process').execFile
 
-  let path = 'calc.exe'
-  console.log('intentando....')
+  let path = 'C:\\sam\\modulo.exe'
+  console.log('--> INICIANDO MODULO....')
   child(path, function(err, data){
     if(err){
       console.error(err)
