@@ -70,7 +70,7 @@ export default {
       ipcRenderer.send('ok_update')
     },
     ejecutar(){
-      ipcRenderer.send('ejecutarComando')
+      ipcRenderer.send('IniciandoModuloAPI')
     },
     descargarNuevoModulo(){
       ipcRenderer.send('ActualizarModulo')

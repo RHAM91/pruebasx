@@ -130,7 +130,7 @@ ipcMain.on('ok_update', (event) =>{
 
 // --> INICIANDO MODULO PARA API
 
-ipcMain.on('ejecutarComando', (event)=>{
+ipcMain.on('IniciandoModuloAPI', (event)=>{
 
 
   let path = 'C:\\sam\\modulo.exe'
@@ -141,6 +141,7 @@ ipcMain.on('ejecutarComando', (event)=>{
       return
     }
     console.log(data.toString())
+    console.log('--> MODULO INICIADO....')
   })
 
 })
