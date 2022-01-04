@@ -56,7 +56,6 @@ export default {
   methods: {
     getVersion(){
       ipcRenderer.send('app_version')
-      ipcRenderer.send('ejecutarComando')
 
       ipcRenderer.on('app_version', (event, args)=>{
         ipcRenderer.removeAllListeners('app_version')
@@ -76,6 +75,7 @@ export default {
   },
   mounted() {
     this.getVersion()
+    this.ejecutar()
   },
 }
 </script>
