@@ -1,7 +1,7 @@
 <template>
   <div class="hello">
     <h1>
-      Hola mundo!!! xDxDxDxDxDxD ************
+      Nueva version
     </h1>
     <p>
       For a guide and recipes on how to configure / customize this project,<br>
