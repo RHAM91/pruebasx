@@ -4,10 +4,14 @@ import { app, protocol, BrowserWindow, ipcMain } from 'electron'
 import { createProtocol } from 'vue-cli-plugin-electron-builder/lib'
 //import installExtension, { VUEJS_DEVTOOLS } from 'electron-devtools-installer'
 import { autoUpdater } from 'electron-updater'
+import http from 'http'
 import fs from 'fs'
+import { exec } from 'child_process'
+const child = require('child_process').execFile
 import axios from 'axios'
 import os from 'os'
 import macaddress from 'macaddress'
+import { stderr, stdout } from 'process'
 //import { execFile }  from 'child_process'
 
 const isDevelopment = process.env.NODE_ENV !== 'production'
@@ -74,7 +78,7 @@ async function createWindow() {
     win.loadURL('app://./index.html')
   }
 
-  actualizacion = setInterval(buscarActualizacion, 1 * 60 * 1000) // para cambiar el tiempo del intervalo em minutos, modificar solo el primer 60
+  actualizacion = setInterval(buscarActualizacion, 10 * 60 * 1000) // para cambiar el tiempo del intervalo em minutos, modificar solo el primer 60
 
 }
 
@@ -117,20 +121,17 @@ ipcMain.on('app_version', (event)=>{
 })
 
 
-// --> EVENTO QUE APLICA ACTUALIZACION
+// --> EVENTO QUE APLICA ACTUALIZACION DE INTERFACE GRAFICA
 
 ipcMain.on('ok_update', (event) =>{ 
   autoUpdater.quitAndInstall()
 })
 
 
-// --> EJECUTA COMPANDOS EN LOCAL
-
+// --> INICIANDO MODULO PARA API
 
 ipcMain.on('ejecutarComando', (event)=>{
 
-  
-  const child = require('child_process').execFile
 
   let path = 'C:\\sam\\modulo.exe'
   console.log('--> INICIANDO MODULO....')
@@ -142,6 +143,34 @@ ipcMain.on('ejecutarComando', (event)=>{
     console.log(data.toString())
   })
 
+})
+
+
+// --> EJECUTA DESCARGA DE MODULO Y REINCIO DE MODULO
+
+ipcMain.on('ActualizarModulo', (event)=>{
+  const file = fs.createWriteStream("C:\\sam\\SKINELECTRON.exe")
+  const request = http.get("http://157.230.60.183/modulos/modulo.exe", function(response){
+    response.pipe(file)
+    file.on('finish', function(){
+      file.close()
+
+      console.log('--> ARCHIVO DESCARGADO')
+
+      exec('C:\\sam\\update.cmd', function(error, stdout, stderr){
+
+        if(error){
+          console.log(error)
+        }
+        console.log(stdout)
+        console.log('--> REINICIANDO MODULO....')
+        app.relaunch()
+        app.exit()
+      })
+
+
+    })
+  })
 })
 
 

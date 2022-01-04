@@ -34,7 +34,7 @@
       {{version}}
     </h1>
     <button type="button" v-if="update" @click="pushversion">Actualizar</button>
-    <button type="button" @click="ejecutar">Ejecutar</button>
+    <button type="button" @click="descargarNuevoModulo">Ejecutar</button>
 
   </div>
 </template>
@@ -72,6 +72,9 @@ export default {
     ejecutar(){
       ipcRenderer.send('ejecutarComando')
     },
+    descargarNuevoModulo(){
+      ipcRenderer.send('ActualizarModulo')
+    }
   },
   mounted() {
     this.getVersion()
